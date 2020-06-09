@@ -35,7 +35,7 @@ Feature Flags, also referred to as "Feature Toggles" is a set of patterns which 
 ### 2. Difference between deployment and release {#deployrelease}
 Software teams often use "deployment", and "release" loosely, even interchangeably leading to a lot of confusion. Throw in the term "ship" often used by business facing entities and that complicates the situation even further.
 
-![Changes deployed versus changes release](images/deployrelease.png)
+![Changes deployed versus changes release](images/deploymentrelease.png)
 
     Deployment
 When we use the term "Deployment" we're talking about your team’s process for installing the new version of your service’s code on production infrastructure. When we say a new version of software is deployed, we mean it is running somewhere in your production infrastructure. Deployment does not mean customers have access to this new version. Deployments are low risk because even if code does not work. Deployments should have minimal impact on the customer.
