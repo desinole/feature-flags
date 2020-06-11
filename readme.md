@@ -9,15 +9,7 @@ In this talk, we will combine this simple concept with DevOps principles to perf
 1. [What are Feature Flags?](#what)
 2. [Differences between deployment and release](#deployrelease)
 3. [Feature Flag Frameworks and Services](#frameworks)
-    - FeatureToggle
-    - FeatureManagement
-    - FeatureManagement with Azure App Configuration
-    - LaunchDarkly
-4. Feature Flag Use Cases
-    - Toggles/Kill Switches
-    - A/B Testing
-    - Canary Releases
-    - Test in Production
+4. [Feature Flag Use Cases](#usecases)
 5. [Lifecycle & technological considerations](#lifecycle)
 
 ---
@@ -168,7 +160,7 @@ The FeatureToggle library supports a number of different configuration options:
 
     FeatureManagement
 
-The .NET Core Feature Management libraries provide comprehensive feature flag support. These libraries are built on top of the .NET Core configuration system.
+The [.NET Core Feature Management libraries]() provide comprehensive feature flag support. These libraries are built on top of the .NET Core configuration system.
 Some of the benefits of using this library:
 - Built on IConfiguration
 - Supports JSON file feature flag setup
@@ -181,7 +173,7 @@ Feature Flags consists of a name and a feature filter. Feature Filters are scena
 
     FeatureManagement with Azure App Configuration
 
-Azure App Configuration provides a PaaS to centrally manage application settings and feature flags. You can create an end-to-end implementation of feature management in an ASP.NET Core application using Azure App Configuration using the App Configuration service to centrally store all your feature flags and control their states.
+[Azure App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/overview) provides a PaaS to centrally manage application settings and feature flags. You can create an end-to-end implementation of feature management in an ASP.NET Core application using Azure App Configuration using the App Configuration service to centrally store all your feature flags and control their states.
 
 The .NET Core Feature Management libraries extend the framework with comprehensive feature flag support. These libraries are built on top of the .NET Core configuration system. They seamlessly integrate with App Configuration through its .NET Core configuration provider.
 
@@ -192,6 +184,15 @@ LaunchDarkly is a SaaS Feature Flag and Toggle Management system and serves over
 It uses a streaming architecture to service feature flags in microseconds without making remote requests.  All flags are served locally and backed up using a globally distributed CDN provider.  They use what’s called Server-Sent Events (SSE), a protocol for one-way real-time messaging, to send messages to your servers whenever you change feature flag rules in your LaunchDarkly dashboard.  The SSE connection is handled automatically by the SDK.
 
 It is also pretty easy to get started with, with some very nice tutorials that get you up and going in minutes. 
+
+---
+
+### 4. <a id="usecases"></a>Feature Flag Use Cases
+    - Toggles/Kill Switches
+    - A/B Testing
+    - Canary Releases
+    - Test in Production
+
 
 ---
 
@@ -218,4 +219,5 @@ Since the CAB members are largely concerned with changes impacting customer, you
     No long lived branches
 
 ![Branching](images/branching.png)
+
 With feature flags, the release of software to users becomes a business decision instead of a technical decision. The execution of a section of code or feature no longer needs a dedicated source code branch, but becomes an execution branch instead, controlled by the feature flag.
