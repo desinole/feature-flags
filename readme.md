@@ -8,17 +8,21 @@ In this talk, we will combine this simple concept with DevOps principles to perf
 
 1. [What are Feature Flags?](#what)
 2. [Differences between deployment and release](#deployrelease)
-3. Feature Flag Frameworks
-    - Sim
-4. Separate deployments from releases and test in production with:
+3. [Feature Flag Frameworks and Services](#frameworks)
+    - FeatureToggle
+    - FeatureManagement
+    - FeatureManagement with Azure App Configuration
+    - LaunchDarkly
+4. Feature Flag Use Cases
     - Toggles/Kill Switches
     - A/B Testing
-    - Canary
+    - Canary Releases
+    - Test in Production
 5. [Lifecycle & technological considerations](#lifecycle)
 
 ---
 
-### 1. What are Feature Flags? {#what}
+### 1. <a id="what"></a>What are Feature Flags? 
 >Feature Toggles (often also referred to as Feature Flags) are a powerful technique, allowing teams to modify system behavior without changing code.
 -[Martin Fowler](https://martinfowler.com/articles/feature-toggles.html)
 
@@ -107,7 +111,7 @@ While it's not advisable to daisy chain feature flag, one flag being used in mul
 
 ---
 
-### 2. Difference between deployment and release {#deployrelease}
+### 2. <a id="deployrelease"></a> Difference between deployment and release
 Software teams often use "deployment", and "release" loosely, even interchangeably leading to a lot of confusion. Throw in the term "ship" often used by business facing entities and that complicates the situation even further.
 
 ![Changes deployed versus changes release](images/deploymentrelease.png)
@@ -133,10 +137,65 @@ Blue-green deployment involve infrastructure level changes. Once switched over n
 
 >**Note:** Since blue-green deployments often involve production infrastructure, this might be an useful technique to use when infrastructure level changes occur. Feature Flags could still handle code level changes.
 
+---
+
+### 3. <a id="frameworks"></a>Feature Flag Frameworks and Services
+    FeatureToggle
+[FeatureToggle by Jason Roberts](http://jason-roberts.github.io/FeatureToggle.Docs/) is an open source library licensed under the Apache version two license. To install FeatureToggle into an application, you can simply use NuGet. The library supports multiple. NET platforms. 
+
+Frameworks like FeatureToggle do not use magic strings to represent toggles in code and instead use strings in the configuration files to actually configure the values. Inside our code base, the library maps these configured values with strongly typed toggles. If the value of a toggle is missing from the configuration file, rather than defaulting to true or false, the application will throw an exception. This way, the application won't continue to run in an unknown state.
+
+The FeatureToggle library aims to have a flexible provider model. Some of the types include:
+
+- AlwaysOffFeatureToggle
+- AlwaysOnFeatureToggle
+- EnabledOnOrAfterDateFeatureToggle
+- EnabledOnOrBeforeDateFeatureToggle
+- EnabledBetweenDatesFeatureToggle
+- SimpleFeatureToggle
+- RandomFeatureToggle
+- EnabledOnDaysOfWeekFeatureToggle
+- SqlFeatureToggle
+
+The library aims to make this provider swappable so you can swap a existing provider for a custom provider. 
+
+The FeatureToggle library supports a number of different configuration options:
+- Code (needs redeploy of code)
+- App or web config (edit file)
+- Centralized (SQL or RavenDB) - .NET Framework only
+
+[Usage](http://jason-roberts.github.io/FeatureToggle.Docs/pages/usage.html)
+
+    FeatureManagement
+
+The .NET Core Feature Management libraries provide comprehensive feature flag support. These libraries are built on top of the .NET Core configuration system.
+Some of the benefits of using this library:
+- Built on IConfiguration
+- Supports JSON file feature flag setup
+- Configuration values can change in real-time, feature flags can be consistent across the entire request
+- Toggle on/off features through declarative configuration file
+- Dynamically evaluate state of feature based on call to server
+- API extensions for ASP.NET Core and MVC framework: Routing, Filters and Action Attributes
+
+Feature Flags consists of a name and a feature filter. Feature Filters are scenarios for enabling/disabling flags. For instance, a filter that enables the flag for only 10% of the requests.
+
+    FeatureManagement with Azure App Configuration
+
+Azure App Configuration provides a PaaS to centrally manage application settings and feature flags. You can create an end-to-end implementation of feature management in an ASP.NET Core application using Azure App Configuration using the App Configuration service to centrally store all your feature flags and control their states.
+
+The .NET Core Feature Management libraries extend the framework with comprehensive feature flag support. These libraries are built on top of the .NET Core configuration system. They seamlessly integrate with App Configuration through its .NET Core configuration provider.
+
+    LaunchDarkly
+
+LaunchDarkly is a SaaS Feature Flag and Toggle Management system and serves over 200 billion feature flags/day.
+
+It uses a streaming architecture to service feature flags in microseconds without making remote requests.  All flags are served locally and backed up using a globally distributed CDN provider.  They use what’s called Server-Sent Events (SSE), a protocol for one-way real-time messaging, to send messages to your servers whenever you change feature flag rules in your LaunchDarkly dashboard.  The SSE connection is handled automatically by the SDK.
+
+It is also pretty easy to get started with, with some very nice tutorials that get you up and going in minutes. 
 
 ---
 
-### 5. Lifecycle & technological considerations {#lifecycle}
+### 5. <a id="lifecycle"></a>Lifecycle & technological considerations
     Feature Flags are technical debt
 Feature flags is essentially new code you're adding which means they should be treated as technical debt. You need to have a review process in place to periodically review all feature flags. Older flags with deprecated or unused features should be removed ASAP. If a feature is released to all users, the feature flag is no longer needed, ie, should be removed. Permanent feature flags, for instance, ones used to handle subscription type access should be reviewed and maintained for as long as they're in use.
 
