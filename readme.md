@@ -189,8 +189,8 @@ It is also pretty easy to get started with, with some very nice tutorials that g
 
 ### 4. <a id="usecases"></a>Feature Flag Use Cases
 [Toggles/Kill Switches](src/FeatureToggleMVC/readme.md)
-[A/B Testing](src/FeatureToggleMVC/readme.md)
-[Canary Releases](src/FeatureToggleMVC/readme.md)
+[A/B Testing](src/featuremanagerazappcfg/readme.md)
+[Canary Releases](src/LaunchDarklyMVC/readme.md)
 
 ---
 
