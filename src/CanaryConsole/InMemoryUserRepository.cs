@@ -1,11 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace CanaryConsole
 {
     public class InMemoryUserRepository : IUserRepository
     {
+        public static List<User> CreateUser(){
+            List<User> users = new List<User>();
+            users.Add(new User
+            {
+                Id = "Santosh",
+                Groups = Enumerable.Empty<string>()
+            });
+            users.Add(new User{
+                Id = "Scott",
+                Groups = Enumerable.Empty<string>()
+            });
+            // var fakerCanary = new Faker<User>()
+            // .RuleFor(u=>u.Id, f=>f.Name.FirstName())
+            // .RuleFor(u=>u.Groups, f=>new List<string>(){"Canary"});
+            return users;
+        }
         public static readonly IEnumerable<User> Users = new User[]
         {
             new User
@@ -127,10 +142,6 @@ namespace CanaryConsole
                     "Ring1"
                 }
             }
-
-
-
-
         };
 
         public Task<User> GetUser(string id)

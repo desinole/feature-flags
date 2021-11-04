@@ -39,7 +39,8 @@ namespace featuremanagerazappcfg
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-                        app.UseAzureAppConfiguration();
+
+            app.UseAzureAppConfiguration();
 
             app.UseStaticFiles();
 
