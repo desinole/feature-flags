@@ -1,7 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<feature name="@Globals.FeatureFlags.HolidaySaleTimeWindow">
+    <div class="text-center">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HolidaySale">Click here for the
+            sale</a>
+    </div>
 
-<div class="text-center">
-    <img src="holidaysale.jpg"
-</div>
+    <div class="text-center">
+        <img src="holidaysale.jpg" />
+    </div>
+</feature>
+
+<feature name="@Globals.FeatureFlags.HolidaySaleTimeWindow" negate="true">
+    <div class="text-center">
+        <img src="comingsoon.jpg" />
+    </div>
+</feature>

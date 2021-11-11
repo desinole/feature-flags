@@ -113,16 +113,13 @@ app.UseAzureAppConfiguration();
 Finally, we add the ability for the app to handle featuremanagement and azure app configuration
 
 ```csharp
-
 builder.Services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>();
 builder.Services.AddAzureAppConfiguration();
-
 ```
 
 Now the holiday sale flag can be access from the controller code using dependency injection as follows:
 
 ```csharp
-
     private readonly IFeatureManager _featureManagement;
     public HomeController(IFeatureManager featureManagement)
     {
@@ -133,6 +130,54 @@ Now the holiday sale flag can be access from the controller code using dependenc
         var flag = _featureManagement.IsEnabledAsync(nameof(Globals.FeatureFlags.HolidaySaleTimeWindow)).Result;
         return View();
     }
-
 ```
 
+We can also incorporate feature management into razor views with a little bit of plumbing. Add the below razor code in your entire app by appending to the _ViewImports.cshtml file in the Views folder
+
+```razor
+@addTagHelper *, Microsoft.FeatureManagement.AspNetCore
+```
+
+At this point we can invoke feature flags in our views using ```<feature>``` tag
+
+```html
+<feature name="@Globals.FeatureFlags.HolidaySaleTimeWindow">
+    <div class="text-center">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HolidaySale">Click here for the
+            sale</a>
+    </div>
+
+    <div class="text-center">
+        <img src="holidaysale.jpg" />
+    </div>
+</feature>
+```
+
+We can also make the view behave in the opposite way of the toggle using ```negate```. For instance, by appending below code we can create the equivalent of an _if-else_ logical flow in the view
+
+```html
+<feature name="@Globals.FeatureFlags.HolidaySaleTimeWindow" negate="true">
+    <div class="text-center">
+        <img src="holidaysale.jpg" </div>
+</feature>
+```
+
+Now, we add an additional controller for the products on sale. We will use a FeatureGate for this controller to prevent access when the toggle is off
+
+```csharp
+    public IActionResult HolidaySale()
+    {
+        return View();
+    }
+```
+
+Create a _HolidaySale.cshtml_ view page as shown below
+```razor
+@{
+    ViewData["Title"] = "Holiday Sales";
+}
+<h1>@ViewData["Title"]</h1>
+<img src="/products.png" />
+```
+
+You can toggle the flag in Azure App Config and watch how the home page flips between the sales banner and coming soon banner. Additionally, you can also try to access the HolidaySales page and experience how the page either displays or throws a 404 error depending on how the flag was set.
