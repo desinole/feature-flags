@@ -4,7 +4,6 @@ using Microsoft.FeatureManagement.FeatureFilters;
 
 internal class DisplayService
 {
-
     public async IAsyncEnumerable<string> Display(IFeatureManager _featureManager)
     {
         IEnumerable<User> users = InMemoryUserRepository.Users;
@@ -18,8 +17,7 @@ internal class DisplayService
                 _featureManager.IsEnabledAsync
                 (nameof(Globals.FeatureFlags.GitMagicFellowPilot), targetingContext);
             await Task.Delay(1000);
-            yield return $"User:{ user.Id } is enabled:{ enabled }";
-
+            yield return $"         User: { user.Id } belonging to Group(s) { String.Join(',', user.Groups.ToList<string>()) } has access to { nameof(Globals.FeatureFlags.GitMagicFellowPilot) } - { enabled }           ";
         }
     }
 }
