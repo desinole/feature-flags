@@ -2,47 +2,48 @@ using Bogus;
 
 internal class InMemoryUserRepository : IUserRepository
 {
-    internal static List<User> CreateUser()
+    internal static List<User> CreateUsers()
     {
         List<User> users = new List<User>();
         users.Add(new User
         {
             Id = "Santosh",
-            Groups = Enumerable.Empty<string>()
+            Groups = new List<string>() { "Ring10" }
         });
         users.Add(new User
         {
-            Id = "Scott",
-            Groups = Enumerable.Empty<string>()
+            Id = "Zhong",
+            Groups = new List<string>() { "Ring8" }
         });
         var fakerCanary = new Faker<User>()
         .RuleFor(u => u.Id, f => f.Name.FirstName())
-        .RuleFor(u => u.Groups, f => new List<string>() { "Canary" });
+        .RuleFor(u => u.Groups, f => new List<string>() { "Ring0", "Ring1", "Ring2" })
+        .Generate(100);
         return users;
     }
     internal static readonly IEnumerable<User> Users = new User[]
     {
             new User
             {
-                Id = "Satya",
+                Id = "Santosh",
+                Groups = new List<string>() { "Ring10" }
+            },
+            new User
+            {
+                Id = "Edgar",
+                Groups = new List<string>() { "Ring3" }
+            },
+            new User
+            {
+                Id = "Mike",
                 Groups = Enumerable.Empty<string>()
             },
             new User
             {
-                Id = "Scott",
-                Groups = Enumerable.Empty<string>()
-            },
-            new User
-            {
-                Id = "BillG",
-                Groups = Enumerable.Empty<string>()
-            },
-            new User
-            {
-                Id = "Damian",
+                Id = "Zhong",
                 Groups = new List<string>()
                 {
-                    "Ring0"
+                    "Ring8"
                 }
             },
             new User
