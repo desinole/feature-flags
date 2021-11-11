@@ -1,20 +1,20 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement;
 using timerflag.Models;
 
 namespace timerflag.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IFeatureManager _featureManagement;
+    public HomeController(IFeatureManager featureManagement)
     {
-        _logger = logger;
+        _featureManagement = featureManagement;
     }
-
     public IActionResult Index()
     {
+        var flag = _featureManagement.IsEnabledAsync(nameof(Globals.FeatureFlags.HolidaySaleTimeWindow)).Result;
         return View();
     }
 

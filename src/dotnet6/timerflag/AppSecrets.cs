@@ -1,7 +1,5 @@
-namespace timerflag
+
+internal class AppSecrets
 {
-    public class AppSecrets
-    {
-        public string AzureAppConfigConnectionString { get; set; }
-    }
+    internal string AzureAppConfigConnectionString { get; set; }
 }
